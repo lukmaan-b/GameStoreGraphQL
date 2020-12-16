@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using GraphQL;
+using GraphQL.SystemTextJson;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +36,25 @@ namespace GameStoreGraphQL
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    context.Response.Redirect("/ui/graphqli");
+                });
+
+                endpoints.MapPost("/graphql", async context =>
+                {
+                    var request = await JsonSerializer.DeserializeAsync<GraphQLRequest>(context.Request.Body, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    var schema =  new Schema { Query = new GameStoreQuery()};
+
+                    var result = await new DocumentExecuter().ExecuteAsync(doc =>
+                    {
+                        doc.Schema = schema;
+                        doc.Query = request.Query;
+                    });
+
+                    await new DocumentWriter().WriteAsync(context.Response.Body, result);
                 });
             });
         }
