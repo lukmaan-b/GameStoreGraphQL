@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using GameStoreGraphQL.Model.GraphQLTypes;
 using GraphQL;
 using GraphQL.SystemTextJson;
 using GraphQL.Types;
@@ -26,6 +27,7 @@ namespace GameStoreGraphQL
             services.AddSingleton<ISchema, GameStoreSchema>();
 
             services.AddTransient<GameStoreQuery>();
+            services.AddTransient<ProductType>();
 
             services.AddGraphQL(options =>
             {
@@ -42,14 +44,13 @@ namespace GameStoreGraphQL
             }
 
             app.UseRouting();
-
+            app.UseGraphiQLServer();
             app.UseGraphQL();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    context.Response.Redirect("/ui/graphqli");
+                    context.Response.Redirect("/ui/graphiql");
                 });
 
             });

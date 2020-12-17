@@ -14,7 +14,7 @@ namespace GameStoreGraphQL
             return app.UseMiddleware<GraphQLMiddleware>();
         }
 
-        public static IServiceCollection AddGraphQL(this IServiceCollection services, Action<GrapQLOptions> action)
+        public static IServiceCollection AddGraphQL(this IServiceCollection services, Action<GraphQLOptions> action)
         {
             return services.Configure(action);
         }

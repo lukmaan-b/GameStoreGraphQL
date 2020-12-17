@@ -12,6 +12,8 @@ namespace GameStoreGraphQL
         public GameStoreSchema(IServiceProvider services) : base(services)
         {
             Query = services.GetRequiredService<GameStoreQuery>();
+
+            
         }
     }
 }

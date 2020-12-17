@@ -1,6 +1,6 @@
 ﻿namespace GameStoreGraphQL
 {
-    public class GrapQLOptions
+    public class GraphQLOptions
     {
         public string EndPoint { get; set; }
     }
