@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using GameStoreGraphQL.Data;
 using GameStoreGraphQL.Model.GraphQLTypes;
 using GraphQL;
 using GraphQL.SystemTextJson;
@@ -10,6 +11,8 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -25,6 +28,8 @@ namespace GameStoreGraphQL
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddSingleton<ISchema, GameStoreSchema>();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemory"));
+
 
             services.AddTransient<GameStoreQuery>();
             services.AddTransient<ProductType>();
