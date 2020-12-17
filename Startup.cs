@@ -27,17 +27,20 @@ namespace GameStoreGraphQL
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.AddSingleton<ISchema, GameStoreSchema>();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemory"));
 
+            services.AddTransient<ISchema, GameStoreSchema>();
 
             services.AddTransient<GameStoreQuery>();
+            services.AddTransient<GameStoreMutation>();
             services.AddTransient<ProductType>();
-
+            services.AddTransient<ProductInputType>();
             services.AddGraphQL(options =>
             {
                 options.EndPoint = "/graphql";
             });
+
+            services.AddTransient<IDataRepository, DataRepository>();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemory"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +50,6 @@ namespace GameStoreGraphQL
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseRouting();
             app.UseGraphiQLServer();
             app.UseGraphQL();
@@ -59,6 +61,7 @@ namespace GameStoreGraphQL
                 });
 
             });
+            SeedData.EnsurePopulated(app);
         }
     }
 }

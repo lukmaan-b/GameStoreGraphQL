@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GameStoreGraphQL.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace GameStoreGraphQL.Data
         {
 
         }
+
+        public DbSet<Product> Products { get; set; }
     }
 }

@@ -8,8 +8,10 @@ namespace GameStoreGraphQL.Data
 {
     public interface IDataRepository
     {
-        public Product GetProductById();
-        public IEnumerable<Product> GetProductsByGenre();
+        public Product GetProductById(int id);
+        public IEnumerable<Product> GetAllProducts();
+        public IEnumerable<Product> GetProductsByGenre(string genre);
+        public Product AddProduct(Product product);
 
 
     }

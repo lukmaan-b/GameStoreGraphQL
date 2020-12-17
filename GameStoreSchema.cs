@@ -13,7 +13,7 @@ namespace GameStoreGraphQL
         {
             Query = services.GetRequiredService<GameStoreQuery>();
 
-            
+            Mutation = services.GetRequiredService<GameStoreMutation>();
         }
     }
 }

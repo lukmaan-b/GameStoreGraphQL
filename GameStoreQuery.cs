@@ -1,5 +1,7 @@
-﻿using GameStoreGraphQL.Model;
+﻿using GameStoreGraphQL.Data;
+using GameStoreGraphQL.Model;
 using GameStoreGraphQL.Model.GraphQLTypes;
+using GraphQL;
 using GraphQL.Types;
 using System;
 using System.Collections.Generic;
@@ -10,14 +12,24 @@ namespace GameStoreGraphQL
 {
     public class GameStoreQuery : ObjectGraphType
     {
-        public GameStoreQuery()
+        public GameStoreQuery(IDataRepository repository)
         {
             Field<StringGraphType>("hello", resolve: ctx => "World");
 
-            Field<ProductType>("product", resolve: context =>
+            Field<ProductType>("product",
+                arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }), 
+                resolve: context =>
             {
-                return new Product { Title = "Mario", Genre = "Platformer", Price = 34.99M };
+
+                    var id = context.GetArgument<int>("id");
+                    return repository.GetProductById(id);
+                
+
             });
+
+            Field<ListGraphType<ProductType>>("products", resolve: ctx => repository.GetAllProducts());
+
+            //Field<ProductType>("product", arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name="genre" })){ }
         }
     }
 }
